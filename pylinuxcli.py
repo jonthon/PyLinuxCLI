@@ -92,7 +92,7 @@ class SocketTerminalHandler(BaseRequestHandler):
             self.request.send(data)
         startterminal(self.request.recv(MAXBYTES), socketinput, 
                                                    socketoutput)
-
+# run this on server device
 class StartSocketTerminal:
     "Server interface"
     def __init__(self, name, port):
