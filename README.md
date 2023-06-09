@@ -19,6 +19,12 @@ filter out the prog input that reappears in the prog output.
 EXAMPLES:
 --------
 - Local CLI:
+jon@jons-linux:~$ python3 pylinuxcli.py
+$ date
+date
+Fri 09 Jun 2023 04:38:26 PM EDT
+$
+
 
 jon@jons-linux:~$ python3 pylinuxcli.py
 $ date
