@@ -7,6 +7,54 @@ MAXBYTES = 1024 ** 1 # 1 KB
 
 class Done(Exception): pass
 
+def input(handler):
+    done = False            # remember state
+    def input(terminalIO):
+        nonlocal done
+        if done: done = False; raise Done
+        else:    handler(terminalIO); done = True
+    return input
+
+@input
+def localinput(terminalIO): 
+    data = sys.stdin.readline().encode()
+    terminalIO.write(data)
+
+def localoutput(terminalIO):
+    data = terminalIO.read()
+    data = data.decode()
+    sys.stdout.write(data)
+    sys.stdout.flush()
+
+def communicate(terminalIO, input, output):
+    while True:
+        try:
+            terminalIO.unblock()            # unblock cli
+            while True: output(terminalIO)  # read all output
+        except BlockingIOError: 
+            terminalIO.block()              # re-block cli
+        try:
+            while True: input(terminalIO)   # write to cli ...
+        except Done: pass                   # till done
+
+# cmd line prog. Could be customized 
+# to use diff other than os.execvp
+def runprogram(cmd):
+    "Program/Command to be run on CLI"
+    args = cmd.strip().split()
+    name = args[0]
+    os.execvp(name, args)
+
+# linux terminal
+def startterminal(cmd, input, output):
+    progID, progIO = pty.fork()
+    if not progID: runprogram(cmd)
+    communicate(TerminalIO(progIO), input, output)
+
+# run locally
+def startlocalterminal(cmd):
+    startterminal(cmd, localinput, localoutput)
+
 class TerminalIO:
     def __init__(self, io, waittime=WAITTIME, maxbytes=MAXBYTES):
         self.io = io
@@ -40,64 +88,17 @@ class SocketIO:
     def close(self):
         self.conn.close()
 
-def communicate(terminalIO, input, output):
-    while True:
-        try:
-            terminalIO.unblock()            # unblock cli
-            while True: output(terminalIO)  # read all output
-        except BlockingIOError: 
-            terminalIO.block()              # re-block cli
-        try:
-            while True: input(terminalIO)   # write to cli ...
-        except Done: pass                   # till done
-
-def input(handler):
-    done = False            # remember state
-    def input(terminalIO):
-        nonlocal done
-        if done: done = False; raise Done
-        else:    handler(terminalIO); done = True
-    return input
-
-@input
-def localinput(terminalIO): 
-    data = sys.stdin.readline().encode()
-    terminalIO.write(data)
-
-def localoutput(terminalIO):
-    data = terminalIO.read()
-    data = data.decode()
-    sys.stdout.write(data)
-    sys.stdout.flush()
-
-# cmd line prog. Could be customized 
-# to use diff other than os.execvp
-def runprogram(cmd):
-    "Program/Command to be run on CLI"
-    args = cmd.strip().split()
-    name = args[0]
-    os.execvp(name, args)
-
-# linux terminal
-def startterminal(cmd, input, output):
-    progID, progIO = pty.fork()
-    if not progID: runprogram(cmd)
-    communicate(TerminalIO(progIO), input, output)
-
-# run locally
-def startlocalterminal(cmd):
-    startterminal(cmd, localinput, localoutput)
-
-class SocketTerminalHandler(BaseRequestHandler):
+class TerminalServerHandler(BaseRequestHandler):
     "Server handler"
     def handle(self):
+        user = SocketIO(self.request, 0.0) # no wait on read
         @input
         def socketinput(terminalIO):
-            data = self.request.recv(MAXBYTES)    # 1KB at a time 
+            data = user.read()             # 1KB at a time 
             terminalIO.write(data)
         def socketoutput(terminalIO):
             data = terminalIO.read()
-            self.request.send(data)
+            user.write(data)
         cmd = self.request.recv(MAXBYTES)
         startterminal(cmd, socketinput, socketoutput)
 
@@ -105,7 +106,7 @@ class SocketTerminalHandler(BaseRequestHandler):
 class StartTerminalServer:
     def __init__(self, name, port):
          IP      = name, port
-         Handler = SocketTerminalHandler
+         Handler = TerminalServerHandler
          Server  = ThreadingTCPServer
          Server(IP, Handler).serve_forever()
 
@@ -120,3 +121,6 @@ class StartSocketTerminal:
         terminal = SocketIO(conn, 1)
         communicate(terminal, localinput, localoutput)
         
+
+if __name__ == '__main__':
+    startlocalterminal('bash')
