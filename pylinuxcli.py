@@ -37,23 +37,22 @@ def communicate(terminalIO, input, output):
             while True: input(terminalIO)   # write to cli ...
         except Done: pass                   # till done
 
-# cmd line prog. Could be customized 
-# to use diff other than os.execvp
-def runprogram(cmd):
-    "Program/Command to be run on CLI"
-    args = cmd.strip().split()
-    name = args[0]
-    os.execvp(name, args)
-
 # linux terminal
-def startterminal(cmd, input, output):
+def startterminal(prog, input, output):
+    # cmd line prog. Could be customized 
+    # to use diff other than os.execvp
+    def runprogram(cmd):
+        "Program/Command to be run on CLI"
+        args = cmd.strip().split()
+        name = args[0]
+        os.execvp(name, args)
     progID, progIO = pty.fork()
-    if not progID: runprogram(cmd)
+    if not progID: runprogram(prog)
     communicate(TerminalIO(progIO), input, output)
 
 # run locally
-def startlocalterminal(cmd):
-    startterminal(cmd, localinput, localoutput)
+def startlocalterminal(prog):
+    startterminal(prog, localinput, localoutput)
 
 class TerminalIO:
     def __init__(self, io, waittime=WAITTIME, maxbytes=MAXBYTES):
@@ -112,12 +111,12 @@ class StartTerminalServer:
 
 # run this on a client device
 class StartSocketTerminal:
-    def __init__(self, name, port, cmd=None):
+    def __init__(self, name, port, prog=None):
         conn = socket.socket()
-        cmd  = 'bash' if not cmd else cmd
-        cmd  = (cmd + '\n').encode()
+        prog  = 'bash' if not prog else prog
+        prog  = (prog + '\n').encode()
         conn.connect((name, port))
-        conn.send(cmd)
+        conn.send(prog)
         terminal = SocketIO(conn, 1)
         communicate(terminal, localinput, localoutput)
         
