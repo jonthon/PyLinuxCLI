@@ -20,6 +20,7 @@ EXAMPLES:
 --------
 - Local CLI:
 
+```
 jon@jons-linux:~$ python3 pylinuxcli.py
 $ date
 date
@@ -37,4 +38,4 @@ Su Mo Tu We Th Fr Sa
 25 26 27 28 29 30     
                       
 $        
-
+```
