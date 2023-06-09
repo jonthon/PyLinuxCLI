@@ -22,11 +22,13 @@ EXAMPLES:
 
 jon@jons-linux:~$ python3 pylinuxcli.py
 $ date
+
 date
 Fri 09 Jun 2023 04:38:26 PM EDT
 $ 
 
 $ cal 
+
 cal 
      June 2023        
 Su Mo Tu We Th Fr Sa  
