@@ -48,3 +48,36 @@ Su Mo Tu We Th Fr Sa
                       
 $ 
 ```
+
+-Remote CLI server
+
+```
+jon@jons-linux:~$ python3 -q
+>>> import pylinuxcli as cli
+>>> cli.StartTerminalServer('', 5000)
+
+```
+
+- Client CLI
+
+```
+jon@jons-linux:~$ python3 -q
+>>> import pylinuxcli as cli
+>>> cli.StartSocketTerminal('localhost', 5000, 'sh')
+$ date
+date
+Sat 10 Jun 2023 11:15:45 AM EDT
+$ 
+
+$ cal
+cal
+     June 2023        
+Su Mo Tu We Th Fr Sa  
+             1  2  3  
+ 4  5  6  7  8  9 10  
+11 12 13 14 15 16 17  
+18 19 20 21 22 23 24  
+25 26 27 28 29 30     
+                      
+$ 
+```
