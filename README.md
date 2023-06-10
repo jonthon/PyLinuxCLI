@@ -28,14 +28,16 @@ EXAMPLES:
 - Local CLI:
 
 ```
-jon@jons-linux:~$ python3 pylinuxcli.py
+jon@jons-linux:~$ python3 -q
+>>> import pylinuxcli as cli
+>>> cli.startlocalterminal('sh')
 $ date
 date
-Fri 09 Jun 2023 04:38:26 PM EDT
+Sat 10 Jun 2023 11:09:53 AM EDT
 $ 
 
-$ cal 
-cal 
+$ cal
+cal
      June 2023        
 Su Mo Tu We Th Fr Sa  
              1  2  3  
@@ -44,5 +46,5 @@ Su Mo Tu We Th Fr Sa
 18 19 20 21 22 23 24  
 25 26 27 28 29 30     
                       
-$        
+$ 
 ```
