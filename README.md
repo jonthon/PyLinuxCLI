@@ -49,7 +49,7 @@ Su Mo Tu We Th Fr Sa
 $ 
 ```
 
--Remote CLI server
+-Remote CLI server (this first..)
 
 ```
 jon@jons-linux:~$ python3 -q
@@ -58,7 +58,7 @@ jon@jons-linux:~$ python3 -q
 
 ```
 
-- Client CLI
+- Client CLI (then this next ...)
 
 ```
 jon@jons-linux:~$ python3 -q
