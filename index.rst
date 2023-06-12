@@ -26,7 +26,7 @@ EXAMPLES:
 ========
 - **Local CLI:**
 
-:: python
+::
 
   jon@jons-linux:~$ python3 -q
   >>> import pylinuxcli as cli
@@ -51,7 +51,7 @@ EXAMPLES:
 
 - **Remote CLI server (this first...)**
 
-:: python
+::
 
   jon@jons-linux:~$ python3 -q
   >>> import pylinuxcli as cli
@@ -60,7 +60,7 @@ EXAMPLES:
 
 - **Client CLI (then this next ...)**
 
-:: python
+::
 
   jon@jons-linux:~$ python3 -q
   >>> import pylinuxcli as cli
