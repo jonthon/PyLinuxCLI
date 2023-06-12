@@ -10,7 +10,7 @@ Linux systems that have IO blocking support.
 This module's remote CLI is ideal for portability use. Run server interface on remote machine, and start client interface on desired 
 device (ie. laptop, phone (with termux app), tablet (with termux app), etc).
 
-Please, visit https://pylinuxcli.readthedocs.io/en/latest/ for more.
+Documentation: https://pylinuxcli.readthedocs.io/en/latest/
 
 
 USAGE:
