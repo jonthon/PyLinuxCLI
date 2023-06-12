@@ -21,6 +21,8 @@ port number to both server and client terminal interfaces. Also, optionally pass
 Since terminal interfaces in this module are low level and from scratch, the output is raw. ``localoutput`` function can be customized 
 to filter out the prog input that reappears in the prog output.
 
+Source code: https://github.com/jonthon/PyLinuxCLI
+
 ========
 EXAMPLES:
 ========
