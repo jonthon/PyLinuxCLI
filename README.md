@@ -10,8 +10,6 @@ Linux systems that have IO blocking support.
 This module's remote CLI is ideal for portability use. Run server interface on remote machine, and start client interface on desired 
 device (ie. laptop, phone (with termux app), tablet (with termux app), etc).
 
-Documentation: https://pylinuxcli.readthedocs.io/en/latest/
-
 
 USAGE:
 -----
@@ -23,6 +21,8 @@ port number to both server and client terminal interfaces. Also, optionally pass
 
 Since terminal interfaces in this module are low level and from scratch, the output is raw. ``localoutput`` function can be customized 
 to filter out the prog input that reappears in the prog output.
+
+Documentation: https://pylinuxcli.readthedocs.io/en/latest/
 
 
 EXAMPLES:
