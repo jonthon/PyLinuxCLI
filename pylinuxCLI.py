@@ -131,11 +131,10 @@ class startCLIserver:
         
 # run this on remote user machine
 class startremoteCLI:
-    def __init__(self, IP, port, *pargs, **kwargs):
+    def __init__(self, IP, port, user=LOCAL_USER, *pargs, **kwargs):
         cli  = socket.socket()
         cli.connect((IP, port))
         cli  = SocketIO(cli)
-        user = LOCAL_USER
         self.shake_hands(cli, user)
         try:    communicate(cli, user, *pargs, **kwargs)
         except: self.on_error(cli, user, sys.exc_info())
