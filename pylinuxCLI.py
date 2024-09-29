@@ -39,8 +39,8 @@ class PipeIO(BaseIO):
         os.close(self.Out)  
 
 class NonEchoPipeIO(PipeIO):
-	def __init__(self, *pargs, **kwargs):
-		PipeIO.__init__(self, *pargs, **kwargs)
+	def __init__(self, In, Out):
+		PipeIO.__init__(self, In, Out)
 		self.reset()
 	def reset(self):
 		self.echo = 0
