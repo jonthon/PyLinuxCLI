@@ -36,9 +36,26 @@ class PipeIO(BaseIO):
         return os.set_blocking(self.In,  False)
     def close(self): 
         os.close(self.In)
-        os.close(self.Out)    
+        os.close(self.Out)  
 
-LOCAL_USER = PipeIO(*LOCAL_USER)
+class NonEchoPipeIO(PipeIO):
+	def __init__(self, *pargs, **kwargs):
+		PipeIO.__init__(self, *pargs, **kwargs)
+		self.reset()
+	def reset(self):
+		self.echo = 0
+	def read(self, maxinfo):
+		info      = PipeIO.read(self, maxinfo)
+		self.echo = len(info) if not self.echo else self.echo
+		self.echo+= 1 # extra line
+		return info
+	def write(self, info):
+		info = info[self.echo:]
+		echo = PipeIO.write(self, info)
+		self.reset()
+		return echo  
+
+LOCAL_USER = NonEchoPipeIO(*LOCAL_USER)
 
 class PtyForkIO(Single, PipeIO): pass
 
@@ -128,7 +145,7 @@ class startCLIserver:
         Handler = CLIServerHandler
         Server  = ThreadingTCPServer
         Server(IPaddr, Handler).serve_forever()
-        
+
 # run this on remote user machine
 class startremoteCLI:
     def __init__(self, IP, port, user=LOCAL_USER, *pargs, **kwargs):
