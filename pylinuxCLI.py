@@ -47,7 +47,7 @@ class NonEchoPipeIO(PipeIO):
 	def read(self, maxinfo):
 		info      = PipeIO.read(self, maxinfo)
 		self.echo = len(info) if not self.echo else self.echo
-		self.echo+= 1 # extra line
+		self.echo+= 1 # \n => \r\n from CLI
 		return info
 	def write(self, info):
 		info = info[self.echo:]
@@ -157,6 +157,7 @@ class startremoteCLI:
         except: self.on_error(cli, user, sys.exc_info())
     def shake_hands(self, cli, user):
         hello = cli.read(4 * MAXBYTES)
+        user  = PipeIO(user.In, user.Out)
         user.write(hello)
         time.sleep(10 * WAITTIME)
         hello = user.read(int(4 * MAXBYTES))
